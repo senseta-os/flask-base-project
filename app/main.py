@@ -1,13 +1,14 @@
 import os
 from flask import Flask
 from flask import render_template
-
 from flask_injector import FlaskInjector
+
+from cloudant.client import CouchDB
 
 from app.providers.fam import FamProvider
 from app.providers.couchdb import CouchDBProvider
 from app.providers.user import UserCouchDBProvider
-from app.providers.user import UserFamProvider
+# from app.providers.user import UserFamProvider
 from app.providers.event import EventProvider
 
 from app.endpoints.views import configure_views
@@ -31,11 +32,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'hello'
-
     @app.route('/')
     def visit_home(name=None):
         return render_template('/index.html', name=name)
@@ -43,11 +39,10 @@ def create_app(test_config=None):
     configure_views(app)
 
     def configure(binder):
-        binder.bind(FamProvider)
         binder.bind(CouchDBProvider)
         binder.bind(UserCouchDBProvider)
-        binder.bind(UserFamProvider)
         binder.bind(EventProvider)
+        binder.bind(CouchDB)
 
     FlaskInjector(app=app, modules=[configure])
 

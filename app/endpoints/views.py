@@ -20,7 +20,11 @@ def configure_views(app):
         view_func=event_view,
         methods=['POST']
     )
-
+    app.add_url_rule(
+        '/events/delete/<event_id>',
+        view_func=event_view,
+        methods=['DELETE']
+    )
     # /events/messages
     event_msgs_view = EventMessagesAPI.as_view('event_msgs_view')
     app.add_url_rule(

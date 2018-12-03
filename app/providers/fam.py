@@ -11,7 +11,7 @@ class FamProvider(object):
     def __init__(self):
         mapper = ClassMapper([User, Call, Event])
         self.db = CouchDBWrapper(
-          mapper,
-          'https://admin:SHFJ3QrCBNJAq8pc47LnhxBLsaAfzu@couchbk.stag.sensitve.app/',
-          'sensitive'
+            mapper,
+            'https://admin:SHFJ3QrCBNJAq8pc47LnhxBLsaAfzu@couchbk.stag.sensitve.app/',
+            'sensitive'
         )
