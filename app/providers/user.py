@@ -12,33 +12,34 @@ class UserCouchDBProvider(object):
     def __init__(self, database: CouchDBProvider):
         self.db = database.db
 
-    def create_user(self):
+    def create_user(self, name, phone, email, birth):
         data = {
-            '_id': 'julia30',  # Setting _id is optional
-            'name': 'Julia',
-            'age': 30,
-            'pets': ['cat', 'dog', 'frog']
+            'name': name,
+            'phone': phone,
+            'email': email,
+            'birth': birth
         }
+
         return self.db.create_document(data)
 
 
-class UserFamProvider(object):
+# class UserFamProvider(object):
 
-    @inject
-    def __init__(self, database: FamProvider):
-        self.db = database.db
+#     @inject
+#     def __init__(self, database: FamProvider):
+#         self.db = database.db
 
-    def create_user(
-        self,
-        name,
-        phone,
-        email,
-        birth
-    ):
-        new_user = User(
-            name=name,
-            phone=phone,
-            email=email,
-            birth=birth
-        )
-        return self.db.put(new_user)
+#     def create_user(
+#         self,
+#         name,
+#         phone,
+#         email,
+#         birth
+#     ):
+#         new_user = User(
+#             name=name,
+#             phone=phone,
+#             email=email,
+#             birth=birth
+#         )
+#         return self.db.put(new_user)

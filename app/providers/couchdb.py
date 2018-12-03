@@ -1,18 +1,26 @@
 from cloudant.client import CouchDB
 from datetime import datetime
 from random import random
+from injector import inject
 
 
 class CouchDBProvider(object):
 
-    def __init__(self):
+    @inject
+    def __init__(self, couchdb: CouchDB):
         self.db_name = 'sensitive'
-        self.db_client = CouchDB(
-            'admin',
-            'SHFJ3QrCBNJAq8pc47LnhxBLsaAfzu',
+        print(couchdb)
+        print('??????')
+        self.couchdb = couchdb
+
+        self.db_client = self.couchdb(
+            user='admin',
+            auth_token='SHFJ3QrCBNJAq8pc47LnhxBLsaAfzu',
             url='https://couchbk.stag.sensitve.app',
             connect=True
         )
+        print(type(self.db_client))
+        print('**************************')
         self.db = self.db_client[self.db_name]
 
     def get_document(self, doc_id):
@@ -30,12 +38,16 @@ class CouchDBProvider(object):
     def create_document(self, doc):
         return self.db.create_document(doc)
 
-    def exec_view(self, path, params={}):
+    def delete_document(self, doc):
+        if doc:
+            return doc.delete()
+        return False
 
+    def exec_view(self, path, params={}):
         view_path = '{}/{}/_design/{}'.format(
-          self.db_client.server_url,
-          self.db_name,
-          path
+            self.db_client.server_url,
+            self.db_name,
+            path
         )
 
         response = self.db_client.r_session.get(view_path, params=params)
