@@ -5,7 +5,6 @@ from flask_injector import FlaskInjector
 
 from cloudant.client import CouchDB
 
-from app.providers.fam import FamProvider
 from app.providers.couchdb import CouchDBProvider
 from app.providers.user import UserCouchDBProvider
 # from app.providers.user import UserFamProvider
@@ -39,10 +38,16 @@ def create_app(test_config=None):
     configure_views(app)
 
     def configure(binder):
+        client = CouchDB(
+            user='admin',
+            auth_token='SHFJ3QrCBNJAq8pc47LnhxBLsaAfzu',
+            url='https://couchbk.stag.sensitve.app',
+            connect=True
+        )
+        binder.bind(CouchDB, to=client)
         binder.bind(CouchDBProvider)
         binder.bind(UserCouchDBProvider)
         binder.bind(EventProvider)
-        binder.bind(CouchDB)
 
     FlaskInjector(app=app, modules=[configure])
 

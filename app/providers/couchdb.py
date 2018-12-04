@@ -7,20 +7,9 @@ from injector import inject
 class CouchDBProvider(object):
 
     @inject
-    def __init__(self, couchdb: CouchDB):
+    def __init__(self, db_client: CouchDB):
         self.db_name = 'sensitive'
-        print(couchdb)
-        print('??????')
-        self.couchdb = couchdb
-
-        self.db_client = self.couchdb(
-            user='admin',
-            auth_token='SHFJ3QrCBNJAq8pc47LnhxBLsaAfzu',
-            url='https://couchbk.stag.sensitve.app',
-            connect=True
-        )
-        print(type(self.db_client))
-        print('**************************')
+        self.db_client = db_client
         self.db = self.db_client[self.db_name]
 
     def get_document(self, doc_id):

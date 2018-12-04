@@ -66,12 +66,12 @@ def test_messages(client):
     assert b'Hola' not in response.data
 
 
-def test_get_message(client):
-    response = client.get(
-        '/events/messages/',
-        query_string='2018-08-17T21:14:27.023732Z_0.43107498006617884'
-    )
-    assert response.status_code == 200
-    assert b'event does not exists' in response.data
+# def test_get_message(client):
+#     response = client.get(
+#         '/events/messages/',
+#         query_string='2018-08-17T21:14:27.023732Z_0.43107498006617884'
+#     )
+#     assert response.status_code == 200
+#     assert b'event does not exists' in response.data
 
 
