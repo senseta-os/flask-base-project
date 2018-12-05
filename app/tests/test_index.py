@@ -28,25 +28,7 @@ def test_create_event(client):
     assert response.status_code == 200
     assert b'event created' in response.data
 
-# def test_get_event(client):
-#     response = client.get(
-#         '/events',
-#         query_string='2018-11-30T21:27:14.026401Z_0.9461661960476352'
-#     )
 
-#     print(response)
-#     print(response.data)
-#     assert response.status_code == 200
-#     assert b'event created' not in response.data
-
-
-    # tmpfilepath = os.path.realpath('tmp-tesstfile')
-
-    # def setUp(self):
-    #     with open(self.tmpfilepath, 'wb') as f:
-    #         f.write(b'Delete me!')
-
-# @mock.patch('os.remove')
 def test_delete_event(client):
     mock = EventProvider(couchdb=CouchDBProvider)
     mock.delete_event = MagicMock(name='delete_event')
@@ -64,14 +46,3 @@ def test_messages(client):
 
     assert b'Hello from Flask' in response.data
     assert b'Hola' not in response.data
-
-
-# def test_get_message(client):
-#     response = client.get(
-#         '/events/messages/',
-#         query_string='2018-08-17T21:14:27.023732Z_0.43107498006617884'
-#     )
-#     assert response.status_code == 200
-#     assert b'event does not exists' in response.data
-
-

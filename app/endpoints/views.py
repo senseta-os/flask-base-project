@@ -18,7 +18,7 @@ def configure_views(app):
     app.add_url_rule(
         '/events/',
         view_func=event_view,
-        methods=['POST']
+        methods=['GET', 'POST']
     )
     app.add_url_rule(
         '/events/delete/<event_id>',
