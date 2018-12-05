@@ -10,6 +10,7 @@ class CouchDBProvider(object):
     def __init__(self, db_client: CouchDB, db_name):
         self.db_client = db_client
         self.db = self.db_client[db_name]
+        self.db_name = db_name
 
     def get_document(self, doc_id):
         if doc_id not in self.db:
@@ -27,9 +28,11 @@ class CouchDBProvider(object):
         return self.db.create_document(doc)
 
     def delete_document(self, doc):
-        if doc:
-            return doc.delete()
-        return False
+        if doc is None:
+            return False
+        else:
+            doc.delete()
+            return True
 
     def exec_view(self, path, params={}):
         view_path = '{}/{}/_design/{}'.format(

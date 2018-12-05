@@ -1,9 +1,6 @@
 from injector import inject
 
 from app.providers.couchdb import CouchDBProvider
-from app.providers.fam import FamProvider
-
-from app.models.user import User
 
 
 class UserCouchDBProvider(object):
@@ -21,25 +18,3 @@ class UserCouchDBProvider(object):
         }
 
         return self.db.create_document(data)
-
-
-# class UserFamProvider(object):
-
-#     @inject
-#     def __init__(self, database: FamProvider):
-#         self.db = database.db
-
-#     def create_user(
-#         self,
-#         name,
-#         phone,
-#         email,
-#         birth
-#     ):
-#         new_user = User(
-#             name=name,
-#             phone=phone,
-#             email=email,
-#             birth=birth
-#         )
-#         return self.db.put(new_user)
