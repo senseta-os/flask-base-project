@@ -44,8 +44,9 @@ def create_app(test_config=None):
             url='https://couchbk.stag.sensitve.app',
             connect=True
         )
+        provider = CouchDBProvider(client, app.config['NAME'])
         binder.bind(CouchDB, to=client)
-        binder.bind(CouchDBProvider)
+        binder.bind(CouchDBProvider, to=provider)
         binder.bind(UserCouchDBProvider)
         binder.bind(EventProvider)
 
