@@ -7,10 +7,9 @@ from injector import inject
 class CouchDBProvider(object):
 
     @inject
-    def __init__(self, db_client: CouchDB):
-        self.db_name = 'sensitive'
+    def __init__(self, db_client: CouchDB, db_name):
         self.db_client = db_client
-        self.db = self.db_client[self.db_name]
+        self.db = self.db_client[db_name]
 
     def get_document(self, doc_id):
         if doc_id not in self.db:
