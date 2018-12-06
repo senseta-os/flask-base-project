@@ -13,7 +13,7 @@ def configure_views(app):
     app.add_url_rule(
         '/events/<event_id>',
         view_func=event_view,
-        methods=['GET', 'DELETE']
+        methods=['GET']
     )
     app.add_url_rule(
         '/events/',

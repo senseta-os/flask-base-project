@@ -42,7 +42,7 @@ def create_app(test_config=None):
         client = CouchDB(
             user='admin',
             auth_token='SHFJ3QrCBNJAq8pc47LnhxBLsaAfzu',
-            url=f'https://couchbk.stag.sensitve.app/',
+            url=f'https://couchbk.stag.sensitve.app',
             connect=True
         )
 

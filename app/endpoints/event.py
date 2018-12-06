@@ -25,11 +25,12 @@ class EventAPI(MethodView):
         return f'event created {doc_id}'
 
     def delete(self, event_id):
-        doc = self.event.delete_event(
-            self.event.get_event(event_id)
-        )
-        if doc:
-            return f'event deleted {event_id}'
+        search_doc = self.event.get_event(event_id)
+
+        if search_doc:
+            doc = self.event.delete_event(search_doc)
+            if doc and doc is not None:
+                return f'event deleted {event_id}'
         return f'event does not exists {event_id}'
 
 

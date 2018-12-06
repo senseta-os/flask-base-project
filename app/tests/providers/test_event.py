@@ -3,11 +3,7 @@
 
 import unittest
 from cloudant.client import CouchDB
-import mock
-from cloudant.client import CouchDB
-from injector import inject
 from app.providers.couchdb import CouchDBProvider
-from app.endpoints.event import EventAPI
 import pytest
 
 
@@ -23,27 +19,39 @@ class TestEvent(unittest.TestCase):
 
         self.db = self.client_couchdb.create_database('test')
 
-        # new_event = {
-        #     '_id': '6662343827845294592352392345',
-        #     'state': 'test',
-        #     'operator_id': 'idoperator12345666666666',
-        #     'type': 'event'
-        # }
-
-    def test_create_event(self):
-        print('response')
-
-    def test_get_event(self):
-        docTest = {
+        self.doc_test = {
             '_id': 'julia102',
             'name': 'Julia',
             'age': 30,
             'type': 'event'
         }
-        self.db.create_document(docTest)
-        provider = CouchDBProvider(self.client_couchdb, 'test')
-        doc = provider.get_document('julia102')
+        self.db.create_document(self.doc_test)
 
+        self.event_to_delete = {
+            '_id': 'documenttodelete',
+            'name': 'Nicolás',
+            'age': 15,
+            'type': 'event'
+        }
+        self.db.create_document(self.event_to_delete)
+
+        self.provider = CouchDBProvider(self.client_couchdb, 'test')
+
+    def test_create_event(self):
+        event_to_delete = {
+            '_id': 'documenttodelete',
+            'operator_id': 'Nicolás',
+            'state': 'New',
+            'doc': 'event'
+        }
+
+        response = self.client.post('/events/', data=event_to_delete)
+
+        assert response.status_code == 200
+        assert b'event created' in response.data
+
+    def test_get_event(self):
+        doc = self.provider.get_document(self.doc_test['_id'])
         response = self.client.get(
             '/events/{}'.format(
                 doc['_id']
@@ -51,3 +59,36 @@ class TestEvent(unittest.TestCase):
         )
 
         assert response.status_code == 200
+
+    def test_delete_event(self):
+        response = self.client.delete(
+            '/events/delete/{}'.format(
+                self.event_to_delete['_id']
+            ),
+        )
+
+        assert response.status_code == 200
+        assert b'event deleted' in response.data
+
+    def test_error_delete_event(self):
+        response = self.client.delete(
+            '/events/delete/{}'.format(
+                'eventthatdoesnnotexist'
+            ),
+        )
+
+        assert response.status_code == 200
+        assert b'event does not exists' in response.data
+
+    # TODO pending querys
+    # def test_get_message(self):
+    #     doc = self.provider.get_document(self.doc_test['_id'])
+
+    #     response = self.client.get(
+    #         '/events/messages/{}'.format(
+    #             doc['_id']
+    #         ),
+    #     )
+
+    #     assert response.status_code == 200
+
